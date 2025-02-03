@@ -13,319 +13,113 @@ st.set_page_config(
 )
 
 # Custom CSS with improved styling
+# Add colorful styling with better visibility
 st.markdown("""
 <style>
-    /* Modern color scheme */
-    :root {
-        --primary-color: #4A90E2;
-        --secondary-color: #2ECC71;
-        --text-color: #2C3E50;
-        --error-color: #E74C3C;
+    /* Main title and headers */
+    .main-title {
+        background: linear-gradient(120deg, #FF6B6B, #4ECDC4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 3.5em;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     
-    /* Global styles */
-    .main {
-        background: transparent;
+    /* All text elements */
+    .stMarkdown, p, label, span {
+        color: white !important;
+        font-size: 1.1em;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    /* Form styling */
+    .stForm {
+        background: rgba(255, 255, 255, 0.1);
         padding: 2rem;
-        color: var(--text-color);
+        border-radius: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
     }
     
     /* Button styling */
     .stButton>button {
-        width: 100%;
-        height: 3.5em;
-        background: linear-gradient(45deg, rgba(74, 144, 226, 0.9), rgba(46, 204, 113, 0.9));
-        color: white;
-        font-weight: bold;
-        border: none;
-        border-radius: 25px;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4) !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.5rem 2rem !important;
+        font-size: 1.2em !important;
+        font-weight: 600 !important;
+        border-radius: 25px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+        transition: transform 0.2s !important;
     }
     
-    /* Card styling */
-    .prediction-box {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        padding: 2rem;
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        color: #666666;  /* Gray text */
-    }
-    
-    /* Success/Error boxes */
-    .success-box {
-        background: linear-gradient(135deg, rgba(46, 204, 113, 0.9), rgba(39, 174, 96, 0.9));
-        color: #666666;  /* Gray text */
-    }
-    .error-box {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 0.9));
-        color: #666666;  /* Gray text */
+    .stButton>button:hover {
+        transform: translateY(-2px);
     }
     
     /* Info box styling */
     .info-box {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        color: #666666;  /* Gray text */
-    }
-    
-    /* Headers */
-    h1 {
-        background: linear-gradient(45deg, #4A90E2, #2ECC71);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        padding: 1.5rem;
-        font-size: 2.5em;
-        font-weight: 800;
-    }
-    h3 {
-        color: var(--primary-color);
-        margin-bottom: 1.5rem;
-        font-weight: 600;
-    }
-    h4 {
-        color: var(--text-color);
+        background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(255, 107, 107, 0.1));
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 2rem;
         margin: 1rem 0;
-        font-weight: 500;
     }
     
-    /* Progress bar */
-    .stProgress > div > div > div > div {
-        background: linear-gradient(45deg, #4A90E2, #2ECC71);
+    /* Prediction boxes */
+    .success-box {
+        background: linear-gradient(135deg, rgba(46, 213, 115, 0.2), rgba(46, 213, 115, 0.1));
+        border: 2px solid rgba(46, 213, 115, 0.3);
     }
     
-    /* Form inputs */
-    .stSelectbox, .stSlider {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
+    .error-box {
+        background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.1));
+        border: 2px solid rgba(255, 107, 107, 0.3);
     }
     
-    /* Lists in info box */
-    .info-box ul {
-        list-style-type: none;
-        padding-left: 0;
-    }
-    .info-box li {
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #eee;
-        color: #666666;
-    }
-    .info-box li:last-child {
-        border-bottom: none;
-    }
-    
-    /* Footer */
+    /* Footer styling */
     .footer {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
         text-align: center;
         padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 15px;
         margin-top: 2rem;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-    }
-    
-    /* Update text colors */
-    .success-box, .error-box {
-        color: #666666;  /* Gray text */
-    }
-    
-    .info-box {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-        color: #666666;  /* Gray text */
-    }
-    
-    /* Form labels */
-    .stSelectbox label, .stSlider label {
-        color: #666666 !important;  /* Gray text */
-    }
-    
-    /* Button text */
-    .stButton>button {
-        color: #666666;  /* Gray text */
-    }
-    
-    /* Update all paragraph text */
-    p {
-        color: #666666 !important;
-    }
-    
-    /* Center-align form elements */
-    .stForm {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    /* Form inputs styling */
-    .stSelectbox, .stSlider {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 0.5rem 0;
-    }
-    
-    /* Center text in form */
-    .stForm label {
-        text-align: center;
-        display: block;
-    }
-    
-    /* Improve spacing */
-    .stForm > div {
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Enhanced text visibility */
-    h1, h2, h3, h4, p, label, .stMarkdown {
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        color: #2C3E50 !important;  /* Darker gray for better contrast */
-        font-weight: 500;
-    }
-    
-    /* Make form labels more visible */
-    .stSelectbox label, .stSlider label {
-        color: #2C3E50 !important;
-        font-size: 1.1em;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-    }
-    
-    /* Enhance info box text */
-    .info-box {
-        color: #2C3E50 !important;
-        font-size: 1.1em;
-    }
-    
-    .info-box h4 {
-        font-size: 1.3em;
-        font-weight: 600;
-        margin-bottom: 1rem;
-    }
-    
-    .info-box li {
-        color: #2C3E50 !important;
-        font-weight: 500;
-        padding: 0.7rem 0;
-    }
-    
-    /* Make prediction results more visible */
-    .prediction-box {
-        font-size: 1.2em;
-    }
-    
-    .prediction-box h3 {
-        font-size: 1.5em;
-        font-weight: 600;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    /* Enhance form text */
-    .stForm {
-        font-size: 1.1em;
-    }
-    
-    /* Make button text more visible */
-    .stButton>button {
-        color: #2C3E50 !important;
-        font-size: 1.2em;
-        font-weight: 600;
-        text-shadow: 1px 1px 2px rgba(255,255,255,0.2);
-    }
-    
-    /* Footer text enhancement */
-    .footer {
-        color: #2C3E50 !important;
-        font-size: 1.1em;
-        font-weight: 500;
-    }
-    
-    /* Enhance gauge chart text */
-    .js-plotly-plot text {
-        font-weight: 500 !important;
-        font-size: 1.1em !important;
-    }
-    
-    /* Make all text white with better visibility */
-    h1, h2, h3, h4, p, label, .stMarkdown {
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        color: white !important;
-        font-weight: 500;
-    }
-    
-    /* Form labels */
-    .stSelectbox label, .stSlider label {
-        color: white !important;
-        font-size: 1.1em;
-        font-weight: 500;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-    
-    /* Info box text */
-    .info-box {
-        color: white !important;
-        font-size: 1.1em;
-    }
-    
-    .info-box h4 {
-        color: white !important;
-        font-size: 1.3em;
-        font-weight: 600;
-    }
-    
-    .info-box li {
-        color: white !important;
-        font-weight: 500;
-    }
-    
-    /* Button text */
-    .stButton>button {
-        color: white !important;
-        font-size: 1.2em;
-        font-weight: 600;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-    
-    /* Footer text */
-    .footer {
-        color: white !important;
     }
     
     .footer span {
-        color: white !important;
+        background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
     }
     
-    /* Gauge chart text */
-    .js-plotly-plot text {
-        fill: white !important;
-        font-weight: 500 !important;
-        font-size: 1.1em !important;
-    }
-    
-    /* Streamlit selects and inputs */
-    .stSelectbox div[data-baseweb="select"] span {
-        color: white !important;
-    }
-    
-    .stSlider [data-testid="stMarkdownContainer"] {
-        color: white !important;
+    /* Gauge chart colors */
+    .js-plotly-plot .plot-container {
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Update header with gradient title
+# st.markdown("""
+# <div style='text-align: center; padding: 2rem;'>
+#     <h1 class='main-title'>
+#         <span style='font-size: 1.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);'>🏦</span>
+#         Bank Account Predictor
+#     </h1>
+#     <p style='color: white !important; font-size: 1.3em; margin-top: -1rem;'>
+#         Powered by AI & Machine Learning
+#     </p>
+# </div>
+# """, unsafe_allow_html=True)
+
+# Update footer with gradient text
+
 
 # Setup paths
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -361,6 +155,23 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<div class='footer'>
+    <p style='color: white !important; font-size: 1.2em;'>
+        Get to know the predicted likelihood of having a bank account <span style='color: #FF6B6B;'>❤️</span> | 
+    </p>
+    <div style='display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;'>
+        <span>🔒 Secure</span>
+        <span>⚡ Fast</span>
+        <span>🎯 Accurate</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
+"""..........................................................................................................."""
+
+"""--------------------------------------------------------------------------------------------------------------"""
 # Create layout with different column ratios
 col1, col2 = st.columns([1, 2])
 
