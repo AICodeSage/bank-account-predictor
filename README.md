@@ -80,11 +80,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🤝 Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
+Your Name - [DIMPHO KGAUME PITSI](https://twitter.com/yourtwitter)
 
-Project Link: [https://github.com/yourusername/bank-account-predictor](https://github.com/yourusername/bank-account-predictor)
+Project Link: [https://github.com/AICodeSage/bank-account-predictor](https://github.com/AICodeSage/bank-account-predictor)
 
 ---
 <p align="center">
-  Made with ❤️ by Your Name
+  Made with ❤️ by DIMPHO KGAUME PITSI
+   
 </p> 
