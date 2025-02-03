@@ -353,7 +353,7 @@ st.markdown("""
 <div style='text-align: center; padding: 2rem;'>
     <h1 style='font-size: 3em; margin-bottom: 0.5rem;'>
         <span style='color: #FFD700; font-size: 1.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>🏦</span>
-        <span style='color: white;'> Bank Account Predictor</span>
+        <span style='color: blue;'> Bank Account Predictor</span>
     </h1>
     <p style='font-size: 1.2em; color: white; margin-top: -1rem;'>
         Powered by AI & Machine Learning
