@@ -102,10 +102,64 @@ st.markdown("""
     .js-plotly-plot .plot-container {
         filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
     }
+
+    /* Dark mode styles - keeping original design */
+    [data-theme="dark"] {
+        --text-color: white;
+    }
+
+    /* Light mode styles only */
+    [data-theme="light"] {
+        /* Base colors */
+        --text-color: white;
+        --background-color: #5B5252;
+        
+        /* Force background color only in light mode */
+        div[data-testid="stAppViewContainer"],
+        div[data-testid="stHeader"],
+        section[data-testid="stSidebar"],
+        .stApp {
+            background-color: #5B5252 !important;
+        }
+        
+        /* Info box styling */
+        .info-box {
+            background: #5B5252 !important;
+            border: 1px solid rgba(0, 0, 0, 0.2) !important;
+        }
+
+        /* Prediction boxes */
+        .prediction-box,
+        .success-box,
+        .error-box {
+            background: #5B5252 !important;
+        }
+
+        /* Footer */
+        .footer {
+            background: #5B5252 !important;
+        }
+
+        /* Form elements */
+        .stForm {
+            background: #5B5252 !important;
+        }
+
+        /* All text elements */
+        .stMarkdown, p, label, span, li, div, h1, h2, h3, h4, h5, h6 {
+            color: white !important;
+            -webkit-text-fill-color: white !important;
+        }
+
+        /* Streamlit specific elements */
+        .css-1d391kg, .css-12oz5g7 {
+            background-color: #5B5252 !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# Update header with gradient title
+# # Update header with gradient title
 # st.markdown("""
 # <div style='text-align: center; padding: 2rem;'>
 #     <h1 class='main-title'>
@@ -142,14 +196,14 @@ except:
     st.error("Error: Model files not found. Please run train.py first!")
     st.stop()
 
-# Update the header section
+# Clean up redundant header - keep only one version
 st.markdown("""
 <div style='text-align: center; padding: 2rem;'>
     <h1 style='font-size: 3em; margin-bottom: 0.5rem;'>
         <span style='color: #FFD700; font-size: 1.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);'>🏦</span>
-        <span style='color: blue;'> Bank Account Predictor</span>
+        <span style='color: black;'> Bank Account Predictor</span>
     </h1>
-    <p style='font-size: 1.2em; color: white; margin-top: -1rem;'>
+    <p style='font-size: 1.2em; color: black; margin-top: -1rem;'>
         Powered by AI & Machine Learning
     </p>
 </div>
@@ -157,8 +211,9 @@ st.markdown("""
 
 st.markdown("""
 <div class='footer'>
-    <p style='color: white !important; font-size: 1.2em;'>
-        Get to know the predicted likelihood of having a bank account <span style='color: #FF6B6B;'>❤️</span> | 
+    <p style='color: black !important; font-size: 1.2em;'>
+        Get to know the predicted likelihood of having a bank account <span style='color: #4C2020
+;'>❤️</span> | 
     </p>
     <div style='display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;'>
         <span>🔒 Secure</span>
@@ -179,15 +234,15 @@ col1, col2 = st.columns([1, 2])
 with col1:
     st.markdown("""
     <div class='info-box' style='margin-top: 2rem;'>
-        <h4>🤖 AI-Powered Predictions</h4>
-        <p>Our model considers various factors including:</p>
+        <h4 style='color: gray !important;'>🤖 AI-Powered Predictions</h4>
+        <p style='color: var(--text-color) !important;'>Our model considers various factors including:</p>
         <ul>
-            <li>Age and Demographics</li>
-            <li>Location Information</li>
-            <li>Household Characteristics</li>
-            <li>Communication Access</li>
+            <li style='color: var(--text-color) !important;'>Age and Demographics</li>
+            <li style='color: var(--text-color) !important;'>Location Information</li>
+            <li style='color: var(--text-color) !important;'>Household Characteristics</li>
+            <li style='color: var(--text-color) !important;'>Communication Access</li>
         </ul>
-        <p>The prediction is based on patterns learned from thousands of real cases.</p>
+        <p style='color: var(--text-color) !important;'>The prediction is based on patterns learned from thousands of real cases.</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -205,14 +260,18 @@ with col2:
         
         with form_col1:
             st.markdown("<h4 style='text-align: center;'>📋 Personal Information</h4>", unsafe_allow_html=True)
-            age = st.slider("Age", min_value=18, max_value=100, value=25)
+            age = st.slider("Age", min_value=18, max_value=100, value=25, help="Select your age (must be 18 or older)")
             gender = st.selectbox("Gender", ["Male", "Female"])
             household_size = st.slider("Household Size", min_value=1, max_value=20, value=4)
         
         with form_col2:
             st.markdown("<h4 style='text-align: center;'>📍 Location & Contact</h4>", unsafe_allow_html=True)
             location = st.selectbox("Location Type", ["Rural", "Urban"])
-            cellphone = st.selectbox("Has Cellphone Access?", ["Yes", "No"])
+            cellphone = st.selectbox(
+                "Has Cellphone Access?",
+                ["Yes", "No"],
+                help="Select whether you have access to a cellphone"
+            )
             year = st.selectbox("Year", list(range(2020, 2031)), index=4)
         
         # Center-align the submit button
@@ -305,7 +364,21 @@ if submitted:
         </div>
         """.format(probability[0] * 100), unsafe_allow_html=True)
 
-# Footer
+    # Add confidence level interpretation
+    def get_confidence_label(probability):
+        if probability >= 0.8:
+            return "Very High Confidence"
+        elif probability >= 0.6:
+            return "High Confidence"
+        elif probability >= 0.4:
+            return "Moderate Confidence"
+        else:
+            return "Low Confidence"
+
+    confidence_label = get_confidence_label(probability[1])
+    st.markdown(f"**Confidence Level:** {confidence_label}")
+
+# Clean up redundant footer - keep only one version at the end of the app
 st.markdown("""
 <div class='footer'>
     <p style='color: #666; font-size: 1.1em;'>
@@ -317,4 +390,6 @@ st.markdown("""
         <span style='color: #E74C3C;'>🎯 Accurate</span>
     </div>
 </div>
-""", unsafe_allow_html=True) 
+""", unsafe_allow_html=True)
+
+
